@@ -1,0 +1,32 @@
+name: Approval Workflow
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  workflow_run:
+    workflows: ["main"]
+    types:
+      - completed
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Manual Approval
+        id: approval
+        uses: wei/github-actions-manual-approval@v1
+        with:
+          #github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment: "Approve deployment to test environment"
+
+      - name: Check Approval Status
+        run: |
+          if [ "${{ steps.approval.outputs.approved }}" == "true" ]; then
+            echo "Deployment to test environment approved."
+          else
+            echo "Deployment to test environment not approved. Exiting workflow."
+            exit 1
+          fi
+

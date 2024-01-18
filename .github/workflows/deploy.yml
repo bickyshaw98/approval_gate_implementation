@@ -19,6 +19,8 @@ jobs:
         #uses: bickyshaw98/github-actions-manual-approval@v1
         with:
           #github-token: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+             echo "hello world"
           comment: "Approve deployment to test environment"
 
       - name: Check Approval Status

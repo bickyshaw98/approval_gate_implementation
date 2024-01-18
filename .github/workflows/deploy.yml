@@ -3,7 +3,7 @@ name: Approval Workflow
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "dev/bestpractices_bicky" ]
+    branches: [ "main" ]
   workflow_run:
     workflows: ["Deployment Workflow"]
     types:

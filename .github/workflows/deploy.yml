@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Manual Approval
         id: approval
-        uses: /approval_gate_implementation@v1
+        uses: wei/github-actions-manual-approval@v1
         with:
           #github-token: ${{ secrets.GITHUB_TOKEN }}
           comment: "Approve deployment to test environment"

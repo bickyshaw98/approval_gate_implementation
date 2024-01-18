@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Wait for Approval
         id: approval
-        uses: bickyshaw98/biceppipline/wait-for-approval@v1
+        uses: bickyshaw98/approval_gate_implementation/wait-for-approval@v1
       - name: Deploy if Approved
         if: steps.approval.outputs.approved == 'true'
         run: |

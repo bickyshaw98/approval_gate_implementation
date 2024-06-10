@@ -1,20 +1,46 @@
-name: Approval Workflow
+name: Environment Based Workflow
+
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  repository_dispatch:
-    types: [manual-approval]
+  workflow_dispatch:
+    inputs:
+      target_env:
+        description: Environment
+        type: choice
+        options:
+          - Dev
+          - Test
+          - Prod
+
 jobs:
-  deploy:
+  setup:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Wait for Approval
-        id: approval
-        uses: bickyshaw98/approval_gate_implementation@v1
-      - name: Deploy if Approved
-        if: steps.approval.outputs.approved == 'true'
-        run: |
-          # Add your deployment steps here
+
+      - name: Display selected environment
+        run: echo "Selected environment: ${{ github.event.inputs.target_env }}"
+
+  deploy-dev:
+    if: ${{ github.event.inputs.target_env == 'Dev' }}
+    runs-on: ubuntu-latest
+    environment: Dev
+    steps:
+      - name: Deploy to Development
+        run: echo "Deploying to Development Environment"
+
+  deploy-test:
+    if: ${{ github.event.inputs.target_env == 'Test' }}
+    runs-on: ubuntu-latest
+    environment: Test
+    steps:
+      - name: Deploy to Testing
+        run: echo "Deploying to Testing Environment"
+
+  deploy-prod:
+    if: ${{ github.event.inputs.target_env == 'Prod' }}
+    runs-on: ubuntu-latest
+    environment: Prod
+    steps:
+      - name: Deploy to Production
+        run: echo "Deploying to Production Environment"
